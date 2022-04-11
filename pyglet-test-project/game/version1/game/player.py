@@ -1,4 +1,5 @@
 import pyglet
+import math
 from pyglet.window import key
 from . import physicalobject, resources
 
@@ -13,7 +14,7 @@ class Player(physicalobject.PhysicalObject):
         self.max_rotation = 200.0
         self.current_thrust = 0
         self.current_rotation = 0
-        self.thrust_interval = 30
+        self.thrust_interval = 15
         self.rotation_interval = 20
         self.keys = dict(left=False, right=False, up=False, down=False)
 
@@ -48,3 +49,19 @@ class Player(physicalobject.PhysicalObject):
             if self.current_rotation < self.max_rotation:
                 self.current_rotation += self.rotation_interval
             self.rotation += self.current_rotation * dt
+        if self.keys['up']:
+            if self.current_thrust < self.max_thrust:
+                self.current_thrust += self.thrust_interval
+            angle_radians = -math.radians(self.rotation)
+            force_x = math.cos(angle_radians) * self.current_thrust * dt
+            force_y = math.sin(angle_radians) * self.current_thrust * dt
+            self.velocity_x += force_x
+            self.velocity_y += force_y
+        if self.keys['down']:
+            if self.current_thrust > 0:
+                self.current_thrust -= self.thrust_interval
+            angle_radians = -math.radians(self.rotation)
+            force_x = math.cos(angle_radians) * self.max_thrust * dt
+            force_y = math.sin(angle_radians) * self.max_thrust * dt
+            self.velocity_x -= force_x
+            self.velocity_y -= force_y
