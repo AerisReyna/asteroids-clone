@@ -1,15 +1,17 @@
 import pyglet
 import math
 from pyglet.window import key
-from . import physicalobject, resources, bullet
+from . import physicalobject, resources, bullet, asteroid
 
 
 
 class Player(physicalobject.PhysicalObject):
 
-    def __init__(self, game_window_size, *args, **kwargs):
+    def __init__(self, game_window_size, player_lives, asteroids, *args, **kwargs):
         super().__init__(img=resources.player_image, game_window_size=game_window_size, *args, **kwargs)
 
+        self.player_lives = player_lives
+        self.asteroids = asteroids
         self.engine_sprite = pyglet.sprite.Sprite(img=resources.engine_image, *args, **kwargs)
         self.engine_sprite.visible = False
 
@@ -23,7 +25,17 @@ class Player(physicalobject.PhysicalObject):
         self.current_rotation = 0
         self.thrust_interval = 15
         self.rotation_interval = 20
-        self.bullet_speed = 700
+        self.bullet_speed = 300
+
+    def reset(self):
+        self.current_thrust = 0
+        self.current_rotation = 0
+        self.x = self.game_width / 2
+        self.y = self.game_height / 2
+        self.rotation = 0
+        self.velocity_x = 0
+        self.velocity_y = 0
+        self.asteroids.reset()
 
     def on_key_press(self, symbol, modifiers):
         if symbol == key.SPACE:
@@ -69,19 +81,29 @@ class Player(physicalobject.PhysicalObject):
         ship_radius = self.image.width / 2
         bullet_x = self.x + math.cos(angle_radians) * ship_radius
         bullet_y = self.y + math.sin(angle_radians) * ship_radius
-        new_bullet = bullet.Bullet(bullet_x, bullet_y, batch=self.batch)
-        bullet_vx = {
+        new_bullet = bullet.Bullet((self.game_width, self.game_height), x=bullet_x, y=bullet_y, batch=self.batch)
+        bullet_vx = (
             self.velocity_x +
             math.cos(angle_radians) * self.bullet_speed
-        }
-        bullet_vy = {
+        )
+        bullet_vy = (
             self.velocity_y +
             math.sin(angle_radians) * self.bullet_speed
-        }
+        )
         new_bullet.velocity_x = bullet_vx
         new_bullet.velocity_y = bullet_vy
         self.new_objects.append(new_bullet)
         
+    def handle_collision_with(self, other_object):
+        if type(other_object) is asteroid.Asteroid:
+            if self.player_lives.lose_life():
+                self.dead = True
+            else:
+                self.reset()
+        else:
+            print('here')
+            self.dead = False
+
     def delete(self):
         self.engine_sprite.delete()
         super(Player, self).delete()

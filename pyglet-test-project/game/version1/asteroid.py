@@ -1,18 +1,17 @@
 import pyglet
-from game import resources, load, player
+from game import resources, load, player, score, lives
 
 main_batch = pyglet.graphics.Batch()
-
 game_window = pyglet.window.Window(1800, 1000)
 
-score_label = pyglet.text.Label(text="Score: 0", x=10, y=game_window.height - 40, batch=main_batch)
-level_label = pyglet.text.Label(text="An Amazing Game Tutorial", x=game_window.width//2, y=game_window.height - 40, anchor_x='center', batch=main_batch)
+score_label = score.ScoreLabel(text="Score: 0", x=10, y=game_window.height - 40, batch=main_batch)
+level_label = pyglet.text.Label(text="Aeris Asteroids", x=game_window.width//2, y=game_window.height - 40, anchor_x='center', batch=main_batch)
 
-player_ship = player.Player(game_window_size=game_window.get_size(), x=game_window.width//2, y=game_window.height//2, batch=main_batch)
+player_lives = lives.Lives(3, game_window.get_size(), main_batch)
+player_ship = player.Player(player_lives=player_lives, game_window_size=game_window.get_size(), x=game_window.width//2, y=game_window.height//2, batch=main_batch)
 
-asteroids = load.asteroids(3, game_window.get_size(), player_ship.position, main_batch)
+asteroids = load.asteroids(3, game_window.get_size(), player_ship.position, score_label, main_batch)
 
-player_lives = load.player_lives(3, game_window, main_batch)
 
 game_objects = asteroids
 
