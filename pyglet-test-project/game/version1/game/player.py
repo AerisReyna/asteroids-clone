@@ -7,11 +7,10 @@ from . import physicalobject, resources, bullet, asteroid
 
 class Player(physicalobject.PhysicalObject):
 
-    def __init__(self, game_window_size, player_lives, asteroids, *args, **kwargs):
+    def __init__(self, game_window_size, player_lives, *args, **kwargs):
         super().__init__(img=resources.player_image, game_window_size=game_window_size, *args, **kwargs)
 
         self.player_lives = player_lives
-        self.asteroids = asteroids
         self.engine_sprite = pyglet.sprite.Sprite(img=resources.engine_image, *args, **kwargs)
         self.engine_sprite.visible = False
 
@@ -35,7 +34,6 @@ class Player(physicalobject.PhysicalObject):
         self.rotation = 0
         self.velocity_x = 0
         self.velocity_y = 0
-        self.asteroids.reset()
 
     def on_key_press(self, symbol, modifiers):
         if symbol == key.SPACE:
