@@ -30,3 +30,6 @@ class Asteroids():
             new_asteroid.velocity_x = random.random() * 100
             new_asteroid.velocity_y = random.random() * 100
             self.gc.game_objects.append(new_asteroid)
+
+    def reset(self):
+        self.gen_asteroids(3)

@@ -7,7 +7,7 @@ game_controller = GameController(window_size=(1800, 1000))
 def on_draw():
     game_controller.game_window.clear()
 
-    game_controller.main_batch.draw()
+    game_controller.draw()
 
 pyglet.clock.schedule_interval(game_controller.update, 1/120.0)
 

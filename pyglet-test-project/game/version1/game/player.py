@@ -95,6 +95,7 @@ class Player(physicalobject.PhysicalObject):
         if type(other_object) is asteroid.Asteroid:
             if self.gc.player_lives.lose_life():
                 self.dead = True
+                self.gc.game_over = True
             else:
                 self.reset()
         else:
