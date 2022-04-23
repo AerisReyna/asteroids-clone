@@ -10,7 +10,7 @@ class Player(physicalobject.PhysicalObject):
     def __init__(self, game_controller, *args, **kwargs):
         super().__init__(game_controller, img=resources.player_image, *args, **kwargs)
         self.gc = game_controller
-        self.engine_sprite = pyglet.sprite.Sprite(img=resources.engine_image, *args, **kwargs)
+        self.engine_sprite = pyglet.sprite.Sprite(img=resources.engine_image, batch=game_controller.main_batch, *args, **kwargs)
         self.engine_sprite.visible = False
 
         self.reacts_to_bullets = False

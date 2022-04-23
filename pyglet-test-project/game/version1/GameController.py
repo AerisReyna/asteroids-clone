@@ -1,5 +1,5 @@
 import pyglet
-from game import load, player, score, lives, asteroids
+from game import player, score, lives, asteroids
 
 class GameController():
 

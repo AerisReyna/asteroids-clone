@@ -1,8 +1,5 @@
-# I still need to move logic out of __init__ and make asteroids generate asteriods to add to the GC array. There's no reason for each thing to have it's own array if it has a reference to the GC
-
-import pyglet
 import random
-from . import resources, util, asteroid
+from . import asteroid
 
 class Asteroids():
     
