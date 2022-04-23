@@ -11,6 +11,8 @@ class Asteroid(physicalobject.PhysicalObject):
             super(Asteroid, self).handle_collision_with(other_object)
             if self.dead:
                 self.gc.score_label.increment()
+            if self.dead and self.scale == 1:
+                self.gc.asteroids.gen_asteroids(1)
             if self.dead and self.scale > 0.25:
                 num_asteroids = random.randint(2, 3)
                 for i in range(num_asteroids):
