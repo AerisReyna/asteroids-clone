@@ -7,10 +7,9 @@ from . import physicalobject, resources, bullet, asteroid
 
 class Player(physicalobject.PhysicalObject):
 
-    def __init__(self, game_window_size, player_lives, *args, **kwargs):
-        super().__init__(img=resources.player_image, game_window_size=game_window_size, *args, **kwargs)
-
-        self.player_lives = player_lives
+    def __init__(self, game_controller, *args, **kwargs):
+        super().__init__(game_controller, img=resources.player_image, *args, **kwargs)
+        self.gc = game_controller
         self.engine_sprite = pyglet.sprite.Sprite(img=resources.engine_image, *args, **kwargs)
         self.engine_sprite.visible = False
 
@@ -79,7 +78,7 @@ class Player(physicalobject.PhysicalObject):
         ship_radius = self.image.width / 2
         bullet_x = self.x + math.cos(angle_radians) * ship_radius
         bullet_y = self.y + math.sin(angle_radians) * ship_radius
-        new_bullet = bullet.Bullet((self.game_width, self.game_height), x=bullet_x, y=bullet_y, batch=self.batch)
+        new_bullet = bullet.Bullet(self.gc, x=bullet_x, y=bullet_y)
         bullet_vx = (
             self.velocity_x +
             math.cos(angle_radians) * self.bullet_speed
@@ -90,11 +89,11 @@ class Player(physicalobject.PhysicalObject):
         )
         new_bullet.velocity_x = bullet_vx
         new_bullet.velocity_y = bullet_vy
-        self.new_objects.append(new_bullet)
+        self.gc.game_objects.append(new_bullet)
         
     def handle_collision_with(self, other_object):
         if type(other_object) is asteroid.Asteroid:
-            if self.player_lives.lose_life():
+            if self.gc.player_lives.lose_life():
                 self.dead = True
             else:
                 self.reset()

@@ -3,14 +3,13 @@ from . import util
 
 class PhysicalObject(pyglet.sprite.Sprite):
     
-    def __init__(self, game_window_size, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        self.new_objects = []
+    def __init__(self, game_controller, *args, **kwargs):
+        super().__init__(batch=game_controller.main_batch, *args, **kwargs)
+        self.gc = game_controller
 
         self.velocity_x, self.velocity_y = 0.0, 0.0
-        self.game_width = game_window_size[0]
-        self.game_height = game_window_size[1]
+        self.game_width = self.gc.game_window.width
+        self.game_height = self.gc.game_window.height
 
         self.dead = False
         self.reacts_to_bullets = True
