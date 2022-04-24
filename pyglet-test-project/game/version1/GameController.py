@@ -4,12 +4,12 @@ from pyglet.window import key
 
 class GameController():
 
-    def __init__(self, window_size=(800, 600), num_lives=3):
+    def __init__(self, window_size=(800, 600), num_lives=3, *args, **kwargs):
         self.main_batch = pyglet.graphics.Batch()
         self.game_over = False
         self.game_over_batch = pyglet.graphics.Batch()
         self.game_objects = []
-        self.game_window = pyglet.window.Window(width=window_size[0], height=window_size[1])
+        self.game_window = pyglet.window.Window(fullscreen=True)
         self.score_label = score.ScoreLabel(text="Score: 0", x=10, 
                                             y=self.game_window.height - 40, 
                                             batch=self.main_batch)

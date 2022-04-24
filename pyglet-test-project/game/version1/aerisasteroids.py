@@ -1,7 +1,7 @@
 import pyglet
 from GameController import GameController
 
-game_controller = GameController(window_size=(1800, 1000))
+game_controller = GameController(window_size=(1920, 1080), fullscreen=True)
 
 @game_controller.game_window.event
 def on_draw():
